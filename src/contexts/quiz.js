@@ -1,12 +1,13 @@
 import { createContext, useReducer } from 'react';
+import data from '../data';
 
 const initialState = {
-  questions: [],
+  questions: data,
   currentIndexQuestion: 0,
 };
 
 const reducer = (state, action) => {
-  console.log('reducer: ', state, action);
+  // console.log('reducer: ', state, action);
   if (action.type === 'NEXT_QUESTION') {
     return {
       ...state,
