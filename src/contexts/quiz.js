@@ -7,30 +7,50 @@ const initialState = {
   currentIndexQuestion: 0,
   showResults: false,
   answers: shuffleAnswers(questions[0]),
+  currentAnswer: '',
+  correctAnswersCount: 0,
 };
 
 const reducer = (state, action) => {
   console.log('reducer: ', state, action);
-  if (action.type === 'NEXT_QUESTION') {
-    const showResults =
-      state.currentIndexQuestion === state.questions.length - 1;
-    const currentIndexQuestion = showResults
-      ? state.currentIndexQuestion
-      : state.currentIndexQuestion + 1;
-    const answers = showResults
-      ? []
-      : shuffleAnswers(questions[currentIndexQuestion]);
-    return {
-      ...state,
-      currentIndexQuestion,
-      showResults,
-      answers,
-    };
+
+  switch (action.type) {
+    case 'NEXT_QUESTION': {
+      const showResults =
+        state.currentIndexQuestion === state.questions.length - 1;
+      const currentIndexQuestion = showResults
+        ? state.currentIndexQuestion
+        : state.currentIndexQuestion + 1;
+      const answers = showResults
+        ? []
+        : shuffleAnswers(questions[currentIndexQuestion]);
+      return {
+        ...state,
+        currentIndexQuestion,
+        showResults,
+        answers,
+        currentAnswer: '',
+      };
+    }
+    case 'RESTART': {
+      return initialState;
+    }
+    case 'SELECT_ANSWER': {
+      const correctAnswersCount =
+        action.payload ===
+        state.questions[state.currentIndexQuestion].correctAnswer
+          ? state.correctAnswersCount + 1
+          : state.correctAnswersCount;
+      return {
+        ...state,
+        currentAnswer: action.payload,
+        correctAnswersCount,
+      };
+    }
+    default: {
+      return state;
+    }
   }
-  if (action.type === 'RESTART') {
-    return initialState;
-  }
-  return state;
 };
 
 export const QuizContext = createContext();

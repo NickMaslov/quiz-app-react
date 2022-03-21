@@ -1,8 +1,24 @@
-const Answer = ({ answer, index }) => {
+const Answer = ({
+  answerText,
+  index,
+  onSelectAnswer,
+  currentAnswer,
+  correctAnswer,
+}) => {
+  const isCorrectAnswer = currentAnswer && answerText === correctAnswer;
+  const isWrongAnswer =
+    currentAnswer === answerText && currentAnswer !== correctAnswer;
+  const correctAnswerClass = isCorrectAnswer ? 'correct-answer' : '';
+  const wrongAnswerClass = isWrongAnswer ? 'wrong-answer' : '';
+  const disabledClass = currentAnswer ? 'disabled-answer' : '';
+
   return (
-    <div className='answer'>
-      <div className='answer-letter'>{index + 1}</div>
-      <div className='answer-text'>{answer}</div>
+    <div
+      className={`answer ${correctAnswerClass} ${wrongAnswerClass} ${disabledClass}`}
+      onClick={() => onSelectAnswer(answerText)}
+    >
+      <div className='answer-letter'>{'ABCD'[index]}</div>
+      <div className='answer-text'>{answerText}</div>
     </div>
   );
 };
